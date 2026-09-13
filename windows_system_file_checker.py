@@ -1,4 +1,5 @@
 import os
+import subprocess
 from pathlib import Path
 
 print("=" * 60)
@@ -67,11 +68,15 @@ if answer == "y":
 print("\nNOTE:")
 print("This program checks whether files exist.")
 print("It does NOT prove that Windows files are unmodified or healthy.")
-print("For a real Windows integrity check, run:")
-print("    sfc /verifyonly")
+
+run_sfc = input("\nDo you want to run SFC /verifyonly now? (y/n): ").strip().lower()
+
+if run_sfc == "y":
+    print("\nRunning: sfc /verifyonly")
+    print("This may take a while. Please wait...\n")
+    try:
+        subprocess.run(["sfc", "/verifyonly"], check=False)
+    except OSError as error:
+        print(f"\nCould not start SFC: {error}")
 
 input("\nPress Enter to exit...")
-
-
-
-
